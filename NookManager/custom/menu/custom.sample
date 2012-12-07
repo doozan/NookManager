@@ -1,0 +1,36 @@
+SCRIPT=/tmp/sdcache/scripts
+MENU=/tmp/sdcache/menu
+CUSTOM_SCRIPT=/tmp/sdcache/custom/scripts
+CUSTOM_MENU=/tmp/sdcache/custom/menu
+
+title="Custom Menu"
+header="This is a description of my program"
+button1="<- Option 1"
+button3="<- Back"
+button2="Option 2 ->"
+footer=
+key=0
+COUNT=0
+
+until [ "$key" -eq "3" ]; do
+  button4="Pressed: $COUNT times"
+
+  $SCRIPT/menu -t "$title" -h "$header" -f "$footer" -1 "$button1" -2 "$button2" -3 "$button3" -4 "$button4" 
+  key=$?
+
+  if [[ "$key" -eq "1" ]]; then
+     $SCRIPT/menu -t "BUTTON 1" -h "You pressed button 1!!!"
+     footer="Last button pressed: 1"
+     sleep 5
+     
+  elif [[ "$key" -eq "2" ]]; then
+     $SCRIPT/menu -t "BUTTON 2" -h "You pressed button 2!!!"
+     footer="Last button pressed: 2"
+     sleep 5
+
+  elif [[ "$key" -eq "4" ]]; then
+    let COUNT=COUNT+1
+     footer="Last button pressed: 4"
+
+  fi
+done

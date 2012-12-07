@@ -1,0 +1,6 @@
+run setbootargs
+mmcinit 0
+mmcinit 1
+fatload mmc 0 0x81c00000 uImage
+fatload mmc 0 0x81f00000 uRamdisk
+bootm 0x81c00000 0x81f00000

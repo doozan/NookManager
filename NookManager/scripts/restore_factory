@@ -1,0 +1,8 @@
+mount -t vfat /dev/block/mmcblk1p1 /sdcard
+mount -t vfat -o remount,rw,sync,noatime,nodiratime,uid=1000,gid=1000,fmask=117,dmask=007 /dev/block/mmcblk0p2 /rom
+
+cp /sdcard/files/rom/devconf/BootCnt /rom/devconf/BootCnt
+sync
+
+mount -t vfat -o remount,ro,sync,noatime,nodiratime,uid=1000,gid=1000,fmask=117,dmask=007 /dev/block/mmcblk0p2 /rom
+umount /sdcard

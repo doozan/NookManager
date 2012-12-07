@@ -1,0 +1,2 @@
+chown system.system /nook/data/app/*
+chmod 644 /nook/data/app/*

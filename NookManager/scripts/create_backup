@@ -1,0 +1,51 @@
+SCRIPT=/tmp/sdcache/scripts
+MENU=/tmp/sdcache/menu
+
+echo "" >  /sys/devices/platform/usb_mass_storage/lun1/file
+
+umount /tmp/backups
+mkdir -p /tmp/backups
+mount -t vfat /dev/block/mmcblk1p2 /tmp/backups
+
+$SCRIPT/mount_nook
+
+echo Backup started `date +%H:%m:%S`
+
+dd if=/dev/zero of=/nook/factory/DELETEME bs=512k
+rm /nook/userdata/DELETEME
+
+dd if=/dev/zero of=/nook/system/DELETEME bs=512k
+rm /nook/system/DELETEME
+
+dd if=/dev/zero of=/nook/userdata/DELETEME bs=512k
+rm /nook/userdata/DELETEME
+
+dd if=/dev/zero of=/nook/cache/DELETEME bs=512k
+rm /nook/cache/DELETEME
+
+dd if=/dev/zero of=/nook/data/DELETEME bs=512k
+rm /nook/data/DELETEME
+
+sync
+
+dd if=/dev/block/mmcblk0 bs=1000k | gzip -1 > /tmp/backups/backup.full.gz
+result=$?
+
+retcode=0
+if [ "$result" -eq "0" ]; then
+  echo Backup complete `date +%H:%m:%S`
+  md5sum /tmp/backups/backup.full.gz > /tmp/backups/backup.full.md5
+  retcode=0
+else
+  echo "Backup failed"
+  rm /tmp/backups/backup.full.gz
+  retcode=1
+fi
+
+sync
+umount /tmp/backups
+$SCRIPT/umount_nook
+
+echo "/dev/block/mmcblk1p2" >  /sys/devices/platform/usb_mass_storage/lun1/file
+
+exit $retcode

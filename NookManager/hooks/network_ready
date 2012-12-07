@@ -1,0 +1,32 @@
+# This is called after the wireless network has connected
+
+SDIR="$( cd "$( dirname "$0" )" && pwd )/.."
+
+IP=`getprop | grep dhcp.tiwlan0.ipaddress | sed 's/.*: \[\(.*\)\]/\1/'`
+ssh="- Start SSH"
+adb="- Start ADB"
+
+key=0
+
+until [[ "$key" -eq "4" ]]; do
+
+  $SDIR/scripts/menu -t "Connected" -h "IP Address: $IP" -1 "$ssh" -3 "$adb" -4 "Continue ->" -f "Use your nook's side buttons to select actions"
+  key=$?
+
+  if [[ "$key" -eq "1" ]]; then
+    # Enable SSH
+    start dropbear
+    ssh=
+
+  elif [[ "$key" -eq "3" ]]; then
+    # Enable adb over wireless network
+    stop adbd
+    setprop service.adb.tcp.port 5555
+    start adbd
+    adb=
+
+  fi
+  
+done
+
+$SDIR/menu/mainmenu

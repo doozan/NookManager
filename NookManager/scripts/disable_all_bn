@@ -1,0 +1,45 @@
+APP_DIR=/nook/system/app
+DISABLED_DIR=/nook/system/disabled-app/
+
+[ -d "$DISABLED_DIR" ] || mkdir -p "$DISABLED_DIR"
+
+mv $APP_DIR/Accessories.apk $DISABLED_DIR
+mv $APP_DIR/AccountAndSyncSettings.apk  $DISABLED_DIR
+mv $APP_DIR/AFfileDownloadService.apk $DISABLED_DIR
+mv $APP_DIR/AirRuntime.apk $DISABLED_DIR
+mv $APP_DIR/BnAuthenticationService.apk $DISABLED_DIR
+mv $APP_DIR/BnCloudRequestSvc.apk $DISABLED_DIR
+mv $APP_DIR/CloudService.apk $DISABLED_DIR
+mv $APP_DIR/ContactsProvider.apk $DISABLED_DIR
+mv $APP_DIR/DemoMode.apk $DISABLED_DIR
+mv $APP_DIR/DeviceManager.apk $DISABLED_DIR
+mv $APP_DIR/DeviceRegistrator.apk $DISABLED_DIR
+mv $APP_DIR/DownloadAdmin.apk $DISABLED_DIR
+mv $APP_DIR/DownloadProvider.apk $DISABLED_DIR
+mv $APP_DIR/DrmProvider.apk $DISABLED_DIR
+mv $APP_DIR/Gallery.apk $DISABLED_DIR
+mv $APP_DIR/GlobalSearch.apk $DISABLED_DIR
+mv $APP_DIR/GoogleSearch.apk $DISABLED_DIR
+mv $APP_DIR/Home.apk $DISABLED_DIR
+mv $APP_DIR/Launcher.apk $DISABLED_DIR
+mv $APP_DIR/Library.apk $DISABLED_DIR
+mv $APP_DIR/MediaProvider.apk $DISABLED_DIR
+mv $APP_DIR/Music.apk $DISABLED_DIR
+mv $APP_DIR/NookCommunity.apk $DISABLED_DIR
+mv $APP_DIR/NookHWTest.apk $DISABLED_DIR
+mv $APP_DIR/Oobe.apk $DISABLED_DIR
+mv $APP_DIR/Phone.apk $DISABLED_DIR
+mv $APP_DIR/PicoTts.apk $DISABLED_DIR
+mv $APP_DIR/QuickStartActivity.apk $DISABLED_DIR
+mv $APP_DIR/Reader.apk $DISABLED_DIR
+mv $APP_DIR/ReaderRMSDK.apk $DISABLED_DIR
+mv $APP_DIR/ServiceOne.apk $DISABLED_DIR
+mv $APP_DIR/Shop.apk $DISABLED_DIR
+mv $APP_DIR/Social.apk $DISABLED_DIR
+mv $APP_DIR/SysChecksum.apk $DISABLED_DIR
+mv $APP_DIR/TelephonyProvider.apk $DISABLED_DIR
+mv $APP_DIR/ThumbnailService.apk $DISABLED_DIR
+mv $APP_DIR/TtsService.apk $DISABLED_DIR
+mv $APP_DIR/WaveformDownloader.apk $DISABLED_DIR
+
+echo "B&N Apps disabled"

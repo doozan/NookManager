@@ -1,0 +1,32 @@
+SCRIPT=/tmp/sdcache/scripts
+MENU=/tmp/sdcache/menu
+CUSTOM_MENU=/tmp/sdcache/custom/menu
+
+title="Extras"
+header=""
+
+button1="<- About NookManager"
+button2="B&N Apps ->"
+button3="<- Back"
+button4=""
+footer=
+key=
+
+[ -f $CUSTOM_MENU/custom ] && button4="Custom ->"
+
+until [ "$key" -eq "3" ]; do
+
+  $SCRIPT/menu -t "$title" -h "$header" -f "$footer" -1 "$button1" -2 "$button2" -3 "$button3" -4 "$button4" 
+  key=$?
+
+  if [[ "$key" -eq "1" ]]; then
+    $MENU/about
+
+  elif [[ "$key" -eq "2" ]]; then
+    $MENU/bn_apps
+
+  elif [[ "$key" -eq "4" ]]; then
+    $CUSTOM_MENU/custom
+  fi
+
+done

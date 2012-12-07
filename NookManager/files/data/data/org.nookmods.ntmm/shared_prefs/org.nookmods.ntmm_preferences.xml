@@ -1,0 +1,8 @@
+<?xml version='1.0' encoding='utf-8' standalone='yes' ?>
+<map>
+<boolean name="always_show_status_icons" value="true" />
+<string name="pref_quicknav_1">Back::KEY:4::2::17301893</string>
+<string name="pref_quicknav_2">Home::ACTIVITY:android.intent.action.MAIN;CATEGORY:android.intent.category.HOME;FLAGS:268435456::2::17301898</string>
+<string name="pref_quicknav_3">Menu::KEY:82::2::17301556</string>
+<boolean name="disable_drag_to_unlock" value="true" />
+</map>

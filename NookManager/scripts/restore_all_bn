@@ -1,0 +1,5 @@
+[ -d /nook/system/disabled-app ] mkdir -p /nook/system/disabled-app
+mv /nook/system/disabled-app/* /nook/system/app
+rmdir /nook/system/disabled-app
+
+echo "B&N Apps restored"

@@ -1,0 +1,4 @@
+cp /sdcard/files/data/app/com.rockolabs.adbkonnect.apk /nook/data/app/
+
+echo "ADB Konnect installed"
+

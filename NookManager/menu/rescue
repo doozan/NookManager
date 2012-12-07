@@ -1,0 +1,24 @@
+SCRIPT=/tmp/sdcache/scripts
+MENU=/tmp/sdcache/menu
+
+title="Rescue"
+header=
+button1="<- Backup"
+button3="<- Back"
+button2="Restore Backup ->"
+button4="Restore factory.zip ->"
+footer=
+key=0
+
+until [ "$key" -eq "3" ]; do
+  $SCRIPT/menu -t "$title" -h "$header" -f "$footer" -1 "$button1" -2 "$button2" -3 "$button3" -4 "$button4" 
+  key=$?
+
+  if [[ "$key" -eq "1" ]]; then
+     $MENU/backup
+  elif [[ "$key" -eq "2" ]]; then
+    $MENU/restore
+  elif [[ "$key" -eq "4" ]]; then
+    $MENU/restore_factory
+  fi
+done

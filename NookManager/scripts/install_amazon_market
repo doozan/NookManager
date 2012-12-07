@@ -1,0 +1,3 @@
+cp /sdcard/files/data/app/com.android.venezia.apk /nook/data/app/
+
+echo "Amazon AppStore installed"

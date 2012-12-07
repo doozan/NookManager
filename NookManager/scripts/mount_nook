@@ -1,0 +1,19 @@
+if [ ! -d /nook ]; then
+  mkdir /nook
+  mkdir /nook/boot
+  ln -s /rom /nook/rom
+  mkdir /nook/factory
+  mkdir /nook/system
+  mkdir /nook/userdata
+  mkdir /nook/cache
+  ln -s /data /nook/data
+fi
+
+mount -t vfat /dev/block/mmcblk0p1 /nook/boot
+mount -t vfat -o remount,rw,sync,noatime,nodiratime,uid=1000,gid=1000,fmask=117,dmask=007 /dev/block/mmcblk0p2 /rom
+mount -t ext2 /dev/block/mmcblk0p3 /nook/factory
+mount -t ext2 /dev/block/mmcblk0p5 /nook/system
+mount -t vfat /dev/block/mmcblk0p6 /nook/userdata
+mount -t ext3 /dev/block/mmcblk0p7 /nook/cache
+mount -t ext3 -o remount,rw,nosuid,nodev,noatime,nodiratime /dev/block/mmcblk0p8 /data
+

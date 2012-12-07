@@ -1,0 +1,45 @@
+SCRIPT=/tmp/sdcache/scripts
+MENU=/tmp/sdcache/menu
+
+title="Create Backup"
+header=
+button1=
+button3="<- Back"
+button2=
+button4=
+footer=
+key=0
+
+
+
+if [ ! -b /dev/block/mmcblk1p2 ]; then
+  header="Backups will be stored on this SD card.\nTo proceed, you must format the unused\nspace on this card."
+  button2="Format remaining space on SD card ->"
+else
+  header="It will take 15-45 minutes to create a backup."
+  button4="Create backup ->"
+fi
+
+until [ "$key" -eq "3" ]; do
+  $SCRIPT/menu -t "$title" -h "$header" -f "$footer" -1 "$button1" -2 "$button2" -3 "$button3" -4 "$button4" 
+  key=$?
+
+  if [[ "$key" -eq "2" ]]; then
+    $SCRIPT/menu -t "$title" -h "$header" -f "Formatting free space on SD card..."
+    footer=`$SCRIPT/create_backup`
+    footer=`$SCRIPT/format_unused_sdcard`
+    header=""
+    button2=""
+    button4="Create backup ->"
+
+  elif [[ "$key" -eq "4" ]]; then
+    $SCRIPT/menu -t "$title" -h "$header" -f "Creating backup image...\nBackup started `date +%H:%m:%S`"
+    footer=`$SCRIPT/create_backup`
+    # If the backup succeeded, hide the create backup button
+    if [ "$?" -eq "0" ]; then 
+      header=""
+      button4=""
+    fi
+  fi
+
+done

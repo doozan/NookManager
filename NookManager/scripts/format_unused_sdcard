@@ -1,0 +1,46 @@
+DEVICE=/dev/block/mmcblk1
+PARTITION=p2
+
+die() {
+  echo -e $@
+  exit 1
+}
+
+echo "" >  /sys/devices/platform/usb_mass_storage/lun0/file
+echo "" >  /sys/devices/platform/usb_mass_storage/lun1/file
+
+if [ "`fdisk -l $DEVICE | grep "$DEVICE$PARTITION"`" != "" ]; then
+  echo "Device $DEVICE is already partitioned."
+  exit 1
+fi
+
+cat <<EOF | fdisk $DEVICE > /dev/null
+n
+p
+2
+
+
+t
+2
+c
+w
+EOF
+
+[ "$?" -eq "0" ] || die Could not write partition
+
+sync
+
+mkdosfs -n "NookBackup" $DEVICE$PARTITION
+[ "$?" -eq "0" ] || die Could not format partition
+
+mkdir -p /tmp/backups
+mount -t vfat $DEVICE$PARTITION /tmp/backups
+[ "$?" -eq "0" ] || die Could not mount partition
+
+FREE=`df -h $DEVICE$PARTITION | grep $DEVICE$PARTITION | awk '{print $4}'`
+umount /tmp/backups
+
+echo "/dev/block/mmcblk1p1" >  /sys/devices/platform/usb_mass_storage/lun0/file
+echo "/dev/block/mmcblk1p2" >  /sys/devices/platform/usb_mass_storage/lun1/file
+
+echo "Partition created: $FREE available."

@@ -1,0 +1,18 @@
+# Copy the scripts from /sdcard to /tmp/sdcache so that /sdcard can be unmounted
+
+if [ -d /tmp/sdcache ]; then
+  rm -rf /tmp/sdcache
+fi
+
+mkdir -p /tmp/sdcache
+
+# Briefly mount the sdcard and copy files from it to /tmp/sdcache
+# This is a workaround.  The partition table will not reload if any of the
+# partitions are mounted and we need to be able to create/format the unused
+# space on the SD card for backups
+mount -t vfat -o ro /dev/block/mmcblk1p1 /sdcard
+rsync -Ia --include "/hooks" --include "/menu" --include "/scripts" --include "/custom" --include "/custom/scripts" --include="/custom/menu" --exclude="/custom/*" --exclude="/*" /sdcard/ /tmp/sdcache
+cp /sdcard/files/system/fonts/DroidSansFallback.ttf /tmp/sdcache
+umount /sdcard
+
+/tmp/sdcache/hooks/system_ready

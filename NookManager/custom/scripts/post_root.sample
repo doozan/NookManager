@@ -1,0 +1,14 @@
+# During rooting, the nook partitions are mounted on /nook
+# and the sdcard is mounted on /sdcard.
+
+# You can access the /scripts folder on the SD card as $SCRIPT
+# and the /custom/scripts folder as $CUSTOM_SCRIPT
+
+SCRIPT=/tmp/sdcache/scripts
+MENU=/tmp/sdcache/menu
+CUSTOM_SCRIPT=/tmp/sdcache/custom/scripts
+CUSTOM_MENU=/tmp/sdcache/custom/menu
+
+# Copy files from /sdcard/custom/files to the nook filesystems mounted on /nook
+
+rsync -Ia /sdcard/custom/files/ /nook/

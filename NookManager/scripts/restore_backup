@@ -1,0 +1,44 @@
+die() {
+  sync
+  umount /tmp/backups
+
+  echo -e $@
+  exit 1
+}
+
+mkdir -p /tmp/backups
+mount -t vfat /dev/block/mmcblk1p2 /tmp/backups
+
+echo Restore started `date +%H:%m:%S`
+
+# Verify the file integrity
+FILE_MD5=`cat /tmp/backups/backup.full.md5 | cut -d " " -f 1`
+IMAGE_MD5=`md5sum /tmp/backups/backup.full.gz | cut -d " " -f 1`
+if [ "$FILE_MD5" -ne "$IMAGE_MD5" ]; then
+  die "Backup checksum is invalid!\nYour backup file is damaged\nNo changes have been made"
+  exit 1
+fi
+
+# verify that backup size matches device NAND size
+NAND_SIZE=`fdisk -l /dev/block/mmcblk0 | grep mmcblk0: | cut -d " " -f 5`
+IMAGE_SIZE=`/usr/bin/gunzip -lv /tmp/backups/backup.full.gz | grep defl | awk '{print $7}'`
+
+[ "$NAND_SIZE" -eq "$IMAGE_SIZE" ] || die "Backup size does not match this device\n$IMAGE_SIZE =! $NAND_SIZE\nNo changes have been made"
+
+# Verify the archive integrity
+/usr/bin/gunzip -t /tmp/backups/backup.full.gz
+[ "$?" -eq "0" ] || die "Archive integrity check failed\nNo changes have been made"
+
+umount /system
+umount /data
+umount /cache
+umount /rom
+
+zcat /tmp/backups/backup.full.gz | dd of=/dev/block/mmcblk0 bs=512k
+
+[ "$?" -eq "0" ] || die "Restore failed!\nYour device may be left in an unbootable state"
+
+sync
+umount /tmp/backups
+
+echo Restore complete `date +%H:%m:%S`

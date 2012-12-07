@@ -1,0 +1,36 @@
+SCRIPT=/tmp/sdcache/scripts
+MENU=/tmp/sdcache/menu
+
+title="Root your Nook"
+header="Rooting will enable ADB on your Nook and\ninstall utilities so you can run and manage apps.\n\nWhile this has been tested, there is no\n guarantee that it is safe for your device.\nYou should have a backup before continuing."
+
+button1="<- Create backup"
+button2="Root my device ->"
+button3="<- Back"
+button4=""
+footer=
+key=
+
+until [ "$key" -eq "3" ]; do
+
+  if [ -b /dev/block/mmcblk1p2  ]; then
+    mkdir -p /tmp/backups
+    mount -t vfat /dev/block/mmcblk1p2 /tmp/backups
+    if [ -f /tmp/backups/backup.full.gz ]; then
+      button1=
+    fi
+    umount /tmp/backups
+  fi
+
+  $SCRIPT/menu -t "$title" -h "$header" -f "$footer" -1 "$button1" -2 "$button2" -3 "$button3" -4 "$button4" 
+  key=$?
+
+  if [[ "$key" -eq "1" ]]; then
+    $MENU/backup
+  elif [[ "$key" -eq "2" ]]; then
+    $SCRIPT/menu -t "$title" -h "$header" -f "Rooting..."
+    footer=`$SCRIPT/do_root`
+    button2=
+  fi
+
+done

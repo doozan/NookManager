@@ -1,0 +1,23 @@
+# This is called when the system has finished booting
+
+SDIR="$( cd "$( dirname "$0" )" && pwd )/.."
+
+$SDIR/scripts/menu -t "Connection failed" -h "Your device was not able to connect to any of the\nconfigured wireless networks." -2 "Retry ->" -4 "Continue without wireless ->" 
+
+if [[ $? -eq 2 ]]; then
+  $SDIR/scripts/menu -t "Connecting..." -h "You device is attempting to connect to\nthe configured wireless network..."
+
+  ifconfig tiwlan0 down
+  
+  stop dhcpcd
+  stop ifcgf_ti
+  stop wpa_supplicant
+  
+  start wpa_supplicant
+  sleep 4
+  start ifcfg_ti
+  sleep 4
+  start dhcpcd
+else
+  $SDIR/menu/mainmenu
+fi

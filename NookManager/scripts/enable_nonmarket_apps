@@ -1,0 +1,2 @@
+sqlite3 /nook/data/data/com.android.providers.settings/databases/settings.db "update secure set value=1 where name='install_non_market_apps';"
+echo "Non-Market Apps enabled"

@@ -1,0 +1,13 @@
+SCRIPT=/tmp/sdcache/scripts
+MENU=/tmp/sdcache/menu
+
+$SCRIPT/menu -t "Exiting..." -h "Please eject your SD card.\nYour device will restart automatically\nwhen the SD card is removed."
+
+while [ -b /dev/block/mmcblk1p1 ]; do
+  sleep 1
+done
+
+$SCRIPT/menu -t "Rebooting..." -h "Thank you for using NookManager." -f "Your device will reboot within 15 seconds.\nIf your device does not reboot,\nremove the SD card and hold the\nrear power button for 15 seconds."
+
+sleep 1
+reboot

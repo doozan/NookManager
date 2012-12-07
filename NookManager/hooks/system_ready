@@ -1,0 +1,51 @@
+# This is called when the system has finished booting
+
+SDIR="$( cd "$( dirname "$0" )" && pwd )/.."
+
+title="NookManager"
+header="Enable Wireless?\n\nIf you have configured your Nook to use your\nlocal wireless network, you will be able\nto use SSH and ADB over WiFi."
+button1=
+button3=
+button2="Yes, start wireless ->"
+button4="No, continue without wireless ->"
+footer="Use your Nook's side buttons to select actions"
+
+if [ -b /dev/block/mmcblk1p2 ]; then
+  echo "/dev/block/mmcblk1p2" >  /sys/devices/platform/usb_mass_storage/lun1/file
+fi
+
+mount -t vfat -o ro,sync,noatime,nodiratime,uid=1000,gid=1000,fmask=117,dmask=007 /dev/block/mmcblk0p2 /rom
+mount -t ext3 -o ro,nosuid,nodev,noatime,nodiratime /dev/block/mmcblk0p8 /data
+
+# Run menu_getkey in the background so we can refresh the main window while waiting for input
+# This is necessary because sometimes the epd controller takes too long to initialize and
+# the menu is not displayed
+($SDIR/scripts/menu_getkey  -1 "$button1" -2 "$button2" -3 "$button3" -4 "$button4" ) &
+pid_getkey=$!
+
+# refresh for 10 seconds, drawing the screen every 2 seconds
+# and checking for key input every 1/10th of a second
+loop=100
+while test "$loop" -gt "0" && kill -0 $pid_getkey
+do
+  if [ "$(($loop % 20))" -eq "0" ]; then
+    $SDIR/scripts/menu_draw -t "$title" -h "$header" -f "$footer" -1 "$button1" -2 "$button2" -3 "$button3" -4 "$button4" 
+  fi
+  sleep .1
+  let loop-=1
+done
+
+wait $pid_getkey
+key=$?
+
+if [[ "$key" -eq "2" ]]; then
+  $SDIR/scripts/menu -t "Connecting..." -h "You device is attempting to connect to the local\nwireless network..."
+
+  # Start wireless
+  insmod /etc/wifi/tiwlan_drv.ko
+  
+  start wlan_loader
+
+else
+  $SDIR/menu/mainmenu
+fi

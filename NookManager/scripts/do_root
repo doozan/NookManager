@@ -1,0 +1,24 @@
+SCRIPT=/tmp/sdcache/scripts
+CUSTOM_SCRIPT=/tmp/sdcache/custom/scripts
+
+$SCRIPT/mount_nook
+mount -t vfat /dev/block/mmcblk1p1 /sdcard
+
+$SCRIPT/patch_uramdisk
+$SCRIPT/install_busybox
+$SCRIPT/install_su
+$SCRIPT/enable_nonmarket_apps
+$SCRIPT/install_launcher
+$SCRIPT/install_nookmods
+$SCRIPT/install_adbkonnect
+$SCRIPT/install_font
+$SCRIPT/install_amazon_market
+$SCRIPT/postroot_cleanup
+$CUSTOM_SCRIPT/post_root
+
+
+umount /sdcard
+$SCRIPT/umount_nook
+
+echo "Success!"
+exit 0

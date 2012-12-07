@@ -1,0 +1,5 @@
+cp /sdcard/files/data/app/com.noshufou.android.su.apk /nook/data/app/  > /dev/null
+cp /sdcard/files/system/bin/su /nook/system/bin > /dev/null
+chmod 6755 /nook/system/bin/su > /dev/null
+
+echo "SuperUser installed"

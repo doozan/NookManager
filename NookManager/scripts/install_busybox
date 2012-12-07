@@ -1,0 +1,8 @@
+mkdir /nook/system/xbin > /dev/null
+cp /bin/busybox /nook/system/xbin/  > /dev/null
+chmod 755 /nook/system/xbin/busybox  > /dev/null
+ln -s /nook/system/xbin /data/busybox  > /dev/null
+/nook/system/xbin/busybox --install -s /system/xbin  > /dev/null
+rm /data/busybox  > /dev/null
+
+echo "Busybox installed"

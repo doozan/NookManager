@@ -1,0 +1,9 @@
+# Check system version
+
+if [ ! -f /nook/system/fonts/DroidSansFallback.ttf.orig ]; then
+  mv /nook/system/fonts/DroidSansFallback.ttf /nook/system/fonts/DroidSansFallback.ttf.orig
+fi
+cp /sdcard/files/system/fonts/DroidSansFallback.ttf /nook/system/fonts
+chmod 644 /nook/system/fonts/DroidSansFallback.ttf
+
+echo "DroidSansFallback installed"

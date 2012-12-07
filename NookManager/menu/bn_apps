@@ -1,0 +1,39 @@
+SCRIPT=/tmp/sdcache/scripts
+MENU=/tmp/sdcache/menu
+CUSTOM_MENU=/tmp/sdcache/custom/menu
+
+title="B&N Apps"
+
+button1=""
+button2=""
+button3="<- Back"
+button4=""
+footer=
+key=
+
+$SCRIPT/mount_nook
+
+until [ "$key" -eq "3" ]; do
+
+  if [ -d /nook/system/disabled-app ]; then
+    header="You have disabled the B&N Apps."
+    button2="Restore all B&N apps -"
+  else
+    header="This will disable all of the B&N apps\nincluding Reader and Home."
+    button2="Disable all B&N apps -"
+  fi
+
+  $SCRIPT/menu -t "$title" -h "$header" -f "$footer" -1 "$button1" -2 "$button2" -3 "$button3" -4 "$button4" 
+  key=$?
+
+  if [[ "$key" -eq "2" ]]; then
+    if [ -d /nook/system/disabled-app ]; then
+      footer=`$SCRIPT/restore_all_bn`
+    else
+      footer=`$SCRIPT/disable_all_bn`
+    fi
+  fi
+
+done
+
+$SCRIPT/umount_nook

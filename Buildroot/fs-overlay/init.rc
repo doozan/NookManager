@@ -1,0 +1,114 @@
+
+on early-init
+# Give the kernel time to enumerate the internal and external MMC/SD cards
+# before init creates the devices in /dev
+    sleep 2
+
+on init
+    setprop ro.boot.console tty0
+
+    export PATH /bin:/sbin:/usr/bin:/system/bin
+    export ANDROID_ROOT /system
+    export ANDROID_DATA /data
+    export EXTERNAL_STORAGE /sdcard
+    export FRAMEBUFFER /dev/graphics/fb0
+    # Set up busybox's shell
+    export ENV /etc/profile
+
+    mkdir /sdcard
+    mkdir /system
+    mkdir /data
+    mkdir /cache
+    mkdir /rom
+    mkdir /boot
+    mkdir /misc
+
+on boot
+
+    ifup lo
+    hostname localhost
+    domainname localdomain
+
+    setprop persist.service.adb.enable 1
+    setprop wifi.interface tiwlan0
+
+    class_start default
+
+    # Enable automatic screen refreshing
+    write /sys/class/graphics/fb0/pgflip_refresh 1
+    write /sys/class/graphics/fb0/epd_refresh 0
+
+    # Give baseimage and bridged time to start
+    sleep 2
+    start omap-edpd
+
+    start system_ready
+
+    write /sys/devices/platform/usb_mass_storage/lun0/file /dev/block/mmcblk1p1
+
+service system_ready /bin/sh /sbin/system_ready
+   disabled
+   oneshot
+
+service network_failed /bin/sh /sbin/network_failed
+    disabled
+    oneshot
+
+service network_ready /bin/sh /sbin/network_ready
+    disabled
+    oneshot
+
+on property:dhcp.tiwlan0.result=ok
+    start network_ready
+
+on property:dhcp.tiwlan0.result=failed
+    start network_failed
+
+on property:wlan.driver.status=ok
+    sleep 1
+    start wpa_supplicant
+    sleep 2
+    start ifcfg_ti
+    sleep 2
+    start dhcpcd
+
+service adbd /sbin/adbd
+
+# load DSP firmware
+service baseimage /sbin/cexec.out -T /etc/dsp/baseimage.dof
+    user root
+    group system
+    oneshot
+
+service bridged /sbin/bridged
+    user root
+    group system
+    oneshot
+
+service omap-edpd /sbin/omap-edpd.elf --timeout=2 -pV220 --fbdev=/dev/graphics/fb0 -s /etc/dsp/subframeip_snode_dsp.dll64P -w /rom/devconf/EpdWaveform,/etc/dsp/default_waveform.bin
+    oneshot
+    disabled
+
+service wlan_loader /sbin/tiwlan_loader \
+    -f /etc/wifi/firmware.bin \
+    -i /etc/wifi/tiwlan.ini \
+    -e /rom/devconf/WiFiBackupCalibration
+    disabled
+    oneshot
+
+service ifcfg_ti /sbin/ifconfig tiwlan0 up
+    disabled
+    oneshot
+
+service wpa_supplicant /sbin/wpa_supplicant -Dtiwlan0 -itiwlan0 -c/data/misc/wifi/wpa_supplicant.conf -dd
+    socket wpa_tiwlan0 dgram 660 wifi wifi
+    disabled
+    oneshot
+
+service dhcpcd /sbin/dhcpcd -ABKL -d tiwlan0
+    disabled
+    oneshot
+
+service dropbear /usr/sbin/dropbear
+    disabled
+    oneshot

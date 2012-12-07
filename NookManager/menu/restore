@@ -1,0 +1,43 @@
+SCRIPT=/tmp/sdcache/scripts
+MENU=/tmp/sdcache/menu
+
+title="Restore Backup"
+header="No backups found on this SD card!"
+button1=
+button3="<- Back"
+button2=
+button4=
+footer=
+key=0
+
+if [ -b /dev/block/mmcblk1p2  ]; then
+  mkdir -p /tmp/backups
+  mount -t vfat /dev/block/mmcblk1p2 /tmp/backups
+  if [ -f /tmp/backups/backup.full.gz ]; then
+    header="The restore may take up to 20 minutes"
+    button4="Restore backup ->"
+    umount /tmp/backups
+  fi
+fi
+
+until [ "$key" -eq "2" -o "$key" -eq "3" ]; do
+  $SCRIPT/menu -t "$title" -h "$header" -f "$footer" -1 "$button1" -2 "$button2" -3 "$button3" -4 "$button4" 
+  key=$?
+
+  if [[ "$key" -eq "4" ]]; then
+    $SCRIPT/menu -t "$title" -h "$header" -f "Restoring image...\nRestore started `date +%H:%m:%S`"
+
+    footer=`$SCRIPT/restore_backup`
+    # Force an exit/reboot after successful restore
+    if [ "$?" -eq "0" ]; then 
+      header=""
+      button2="Exit ->"
+      button3=""
+      button4=""
+    fi
+  fi
+done
+
+if [[ "$key" -eq "2" ]]; then
+  $MENU/exit
+fi

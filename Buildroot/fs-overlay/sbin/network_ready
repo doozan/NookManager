@@ -1,0 +1,4 @@
+# Create resolv.conf
+/system/bin/getprop | grep dhcp.tiwlan0.dns | grep -v \\[\\] | sed 's/.*: \[\(.*\)\]/nameserver \1/' > /etc/resolv.conf
+
+/bin/sh /tmp/sdcache/hooks/network_ready

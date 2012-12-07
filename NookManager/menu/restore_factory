@@ -1,0 +1,33 @@
+SCRIPT=/tmp/sdcache/scripts
+MENU=/tmp/sdcache/menu
+
+title="Factory Restore"
+header="This will start the internal restore procedure to\nrestore your Nook to factory settings.\nYour internal books and settings will be erased."
+button1=
+button3="<- Back"
+button2=
+button4="Restore ->"
+footer=
+key=0
+
+mkdir -p /nook/factory
+umount /nook/factory
+mount -t ext2 /dev/block/mmcblk0p3 /nook/factory
+
+if [ ! -f /nook/factory/factory.zip ]; then
+  header="Your factory.zip is missing!"
+  button4=
+fi
+umount /nook/factory
+
+
+until [ "$key" -eq "3" ]; do
+  $SCRIPT/menu -t "$title" -h "$header" -f "$footer" -1 "$button1" -2 "$button2" -3 "$button3" -4 "$button4" 
+  key=$?
+
+  if [[ "$key" -eq "4" ]]; then
+    footer=`$SCRIPT/restore_factory`
+    button2=""
+    $MENU/exit
+  fi
+done

@@ -1,0 +1,45 @@
+#!/bin/bash
+
+title=
+header=
+button1=
+button2=
+button3=
+button4=
+footer=
+
+while getopts .1:2:3:4:t:h:f:. OPTION
+do
+  case $OPTION in
+    1)
+      button1=$OPTARG
+      ;;
+    2)
+      button2=$OPTARG
+      ;;
+    3)
+      button3=$OPTARG
+      ;;
+    4)
+      button4=$OPTARG
+      ;;
+  esac
+done
+
+while [ "$button1" != "" -o "$button2" != "" -o "$button3" != "" -o "$button4" != ""  ]; do
+  event=`getevent -q -c 1 /dev/input/event0`
+  key=`echo $event | cut -d " " -f 2`
+
+  if [ "$key" = "019c" -a "$button1" != ""  ]; then
+    exit 1
+  elif [ "$key" = "0197" -a "$button2" != "" ]; then
+    exit 2
+  elif [ "$key" = "008b" -a "$button3" != "" ]; then
+    exit 3
+  elif [ "$key" = "009e" -a "$button4" != "" ]; then
+     exit 4
+  fi
+
+done
+
+exit 0

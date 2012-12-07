@@ -1,0 +1,5 @@
+SCRIPT=/tmp/sdcache/scripts
+
+$SCRIPT/menu_draw "$@"
+$SCRIPT/menu_getkey "$@"
+exit $?

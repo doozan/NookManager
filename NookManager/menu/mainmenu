@@ -1,0 +1,43 @@
+SCRIPT=/tmp/sdcache/scripts
+MENU=/tmp/sdcache/menu
+
+$SCRIPT/mount_nook
+SYSTEM=`grep ro.build.version.incremental /nook/system/build.prop | cut -d "=" -f 2`
+$SCRIPT/umount_nook
+
+title="Main Menu"
+key=0
+
+while [ "$key" -ne "3" ]; do
+
+  POWER=`cat  /sys/class/power_supply/bq27510-0/capacity`
+
+  if [ "$POWER" -lt "40" ]; then
+    header="System: $SYSTEM\nBattery Level: $POWER\nPlease charge your battery above 40\nand then restart Snoogie."
+    button1=
+    button2=
+    button3="<- Exit"
+    button2="About ->"
+  else
+    header="System: $SYSTEM\nBattery Level: $POWER"
+    button1="<- Rescue"
+    button3="<- Exit"
+    button2="Root ->"
+    button4="More ->"
+    footer=
+  fi
+
+  # black the screen before drawing the menu
+  $SCRIPT/menu -t "$title" -h "$header" -f "$footer" -1 "$button1" -2 "$button2" -3 "$button3" -4 "$button4" 
+  key=$?
+
+  if [[ "$key" -eq "1" ]]; then
+    $MENU/rescue
+  elif [[ "$key" -eq "2" ]]; then
+    $MENU/root
+  elif [[ "$key" -eq "4" ]]; then
+     $MENU/more
+  fi
+done
+
+$MENU/exit

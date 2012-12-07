@@ -1,0 +1,13 @@
+SCRIPT=/tmp/sdcache/scripts
+MENU=/tmp/sdcache/menu
+
+title="About NookManager"
+header="Developed by Jeff Doozan\n\nThis software is distributed on an\n\"AS IS\" BASIS, WITHOUT WARRANTIES\nOR CONDITIONS OF ANY KIND,\neither express or implied"
+button1=
+button3="<- Back"
+button2=
+button4=
+footer=
+
+$SCRIPT/menu -t "$title" -h "$header" -f "$footer" -1 "$button1" -2 "$button2" -3 "$button3" -4 "$button4" 
+key=$?
