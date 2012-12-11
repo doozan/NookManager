@@ -1,3 +1,5 @@
+SCRIPT=/tmp/sdcache/scripts
+
 die() {
   sync
   umount /tmp/backups
@@ -8,6 +10,7 @@ die() {
 
 mkdir -p /tmp/backups
 mount -t vfat /dev/block/mmcblk1p2 /tmp/backups
+$SCRIPT/umount_nook
 
 echo Restore started `date +%H:%m:%S`
 
@@ -28,11 +31,6 @@ IMAGE_SIZE=`/usr/bin/gunzip -lv /tmp/backups/backup.full.gz | grep defl | awk '{
 # Verify the archive integrity
 /usr/bin/gunzip -t /tmp/backups/backup.full.gz
 [ "$?" -eq "0" ] || die "Archive integrity check failed\nNo changes have been made"
-
-umount /system
-umount /data
-umount /cache
-umount /rom
 
 zcat /tmp/backups/backup.full.gz | dd of=/dev/block/mmcblk0 bs=512k
 

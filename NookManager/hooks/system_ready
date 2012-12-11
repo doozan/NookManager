@@ -14,9 +14,6 @@ if [ -b /dev/block/mmcblk1p2 ]; then
   echo "/dev/block/mmcblk1p2" >  /sys/devices/platform/usb_mass_storage/lun1/file
 fi
 
-mount -t vfat -o ro,sync,noatime,nodiratime,uid=1000,gid=1000,fmask=117,dmask=007 /dev/block/mmcblk0p2 /rom
-mount -t ext3 -o ro,nosuid,nodev,noatime,nodiratime /dev/block/mmcblk0p8 /data
-
 # Run menu_getkey in the background so we can refresh the main window while waiting for input
 # This is necessary because sometimes the epd controller takes too long to initialize and
 # the menu is not displayed
