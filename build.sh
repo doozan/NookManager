@@ -71,7 +71,6 @@ download "https://github.com/CyanogenMod/android_frameworks_base/blob/jellybean/
 download "https://s3.amazonaws.com/github/downloads/yiselieren/ReLaunch/ReLaunch-1.3.8.apk" "$DLDIR/"
 download "https://s3.amazonaws.com/github/downloads/doozan/NookTouchModManager/NookTouchModManager-0.3.0.apk" "$DLDIR/"
 download "http://pool.apk.bazaarandroid.com/moonglo/com-amazon-venezia-201000-634745-98e61fd37521387e2e0b61be64a518b0.apk" "$DLDIR/"
-download "http://download.estrongs.com/app-es-file-explorer.html" "$DLDIR/com.estrongs.android.pop.apk"
 download "https://smali.googlecode.com/files/baksmali-1.4.0.jar" "$DLDIR/"
 download "https://smali.googlecode.com/files/smali-1.4.0.jar" "$DLDIR/"
 
@@ -172,7 +171,6 @@ cp "$DLDIR/DroidSansFallback.ttf" "$OUTDIR/files/system/fonts/"
 cp "$DLDIR/ReLaunch-1.3.8.apk" "$OUTDIR/files/data/app/com.harasoft.relaunch.apk"
 cp "$DLDIR/NookTouchModManager-0.3.0.apk" "$OUTDIR/files/data/app/org.nookmods.ntmm.apk"
 cp "$DLDIR/com-amazon-venezia-201000-634745-98e61fd37521387e2e0b61be64a518b0.apk" "$OUTDIR/files/data/app/com.android.venezia.apk"
-cp "$DLDIR/com.estrongs.android.pop.apk" "$OUTDIR/files/data/app/"
 
 cp "$BDIR/patched-jars/android.policy.jar" "$OUTDIR/files/system/framework/"
 cp "$BDIR/patched-jars/services.jar" "$OUTDIR/files/system/framework/"
