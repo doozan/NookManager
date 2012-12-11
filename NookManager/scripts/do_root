@@ -12,6 +12,7 @@ $SCRIPT/install_launcher
 $SCRIPT/install_nookmods
 $SCRIPT/install_adbkonnect
 $SCRIPT/install_font
+$SCRIPT/install_es_file_explorer
 $SCRIPT/install_amazon_market
 $SCRIPT/postroot_cleanup
 $CUSTOM_SCRIPT/post_root

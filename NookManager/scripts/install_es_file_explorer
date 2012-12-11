@@ -1,0 +1,3 @@
+cp /sdcard/files/data/app/com.estrongs.android.pop.apk /nook/data/app/
+
+echo "ES File Explorer installed"
