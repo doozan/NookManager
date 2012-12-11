@@ -26,7 +26,6 @@ until [ "$key" -eq "3" ]; do
 
   if [[ "$key" -eq "2" ]]; then
     $SCRIPT/menu -t "$title" -h "$header" -f "Formatting free space on SD card..."
-    footer=`$SCRIPT/create_backup`
     footer=`$SCRIPT/format_unused_sdcard`
     header=""
     button2=""
