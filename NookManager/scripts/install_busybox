@@ -1,8 +1,16 @@
-mkdir /nook/system/xbin > /dev/null
-cp /bin/busybox /nook/system/xbin/  > /dev/null
-chmod 755 /nook/system/xbin/busybox  > /dev/null
-ln -s /nook/system/xbin /data/busybox  > /dev/null
-/nook/system/xbin/busybox --install -s /system/xbin  > /dev/null
-rm /data/busybox  > /dev/null
+# Temporarily mount /nook/system on /system
+# so busybox can create symlinks
+
+umount /nook/system
+mount -t ext2 /dev/block/mmcblk0p5 /system
+
+[ -d /system/xbin ] || mkdir /system/xbin
+
+cp /bin/busybox /system/xbin/
+chmod 755 /system/xbin/busybox
+/system/xbin/busybox --install -s /system/xbin/
+
+umount /system
+mount -t ext2 /dev/block/mmcblk0p5 /nook/system
 
 echo "Busybox installed"
