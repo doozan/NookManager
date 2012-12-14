@@ -9,10 +9,11 @@ mount -t vfat /dev/block/mmcblk1p2 /tmp/backups
 
 $SCRIPT/mount_nook
 
-echo Backup started `date +%H:%m:%S`
+echo Backup started `date +%H:%M:%S`
 
+# Zero the free space on each of the Nook's partitions 
 dd if=/dev/zero of=/nook/factory/DELETEME bs=512k
-rm /nook/userdata/DELETEME
+rm /nook/factory/DELETEME
 
 dd if=/dev/zero of=/nook/system/DELETEME bs=512k
 rm /nook/system/DELETEME
@@ -33,12 +34,13 @@ result=$?
 
 retcode=0
 if [ "$result" -eq "0" ]; then
-  echo Backup complete `date +%H:%m:%S`
+  echo Backup complete `date +%H:%M:%S`
   md5sum /tmp/backups/backup.full.gz > /tmp/backups/backup.full.md5
   retcode=0
 else
   echo "Backup failed"
   rm /tmp/backups/backup.full.gz
+  rm /tmp/backups/backup.full.gz.md5
   retcode=1
 fi
 

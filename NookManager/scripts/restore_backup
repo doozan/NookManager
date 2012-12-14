@@ -1,5 +1,3 @@
-SCRIPT=/tmp/sdcache/scripts
-
 die() {
   sync
   umount /tmp/backups
@@ -10,9 +8,8 @@ die() {
 
 mkdir -p /tmp/backups
 mount -t vfat /dev/block/mmcblk1p2 /tmp/backups
-$SCRIPT/umount_nook
 
-echo Restore started `date +%H:%m:%S`
+echo Restore started `date +%H:%M:%S`
 
 # Verify the file integrity
 FILE_MD5=`cat /tmp/backups/backup.full.md5 | cut -d " " -f 1`
@@ -32,6 +29,11 @@ IMAGE_SIZE=`/usr/bin/gunzip -lv /tmp/backups/backup.full.gz | grep defl | awk '{
 /usr/bin/gunzip -t /tmp/backups/backup.full.gz
 [ "$?" -eq "0" ] || die "Archive integrity check failed\nNo changes have been made"
 
+umount /system
+umount /data
+umount /cache
+umount /rom
+
 zcat /tmp/backups/backup.full.gz | dd of=/dev/block/mmcblk0 bs=512k
 
 [ "$?" -eq "0" ] || die "Restore failed!\nYour device may be left in an unbootable state"
@@ -39,4 +41,4 @@ zcat /tmp/backups/backup.full.gz | dd of=/dev/block/mmcblk0 bs=512k
 sync
 umount /tmp/backups
 
-echo Restore complete `date +%H:%m:%S`
+echo Restore complete `date +%H:%M:%S`
