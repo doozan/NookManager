@@ -25,7 +25,7 @@ until [ "$key" -eq "2" -o "$key" -eq "3" ]; do
   key=$?
 
   if [[ "$key" -eq "4" ]]; then
-    $SCRIPT/menu -t "$title" -h "$header" -f "Restoring image...\nRestore started `date +%H:%m:%S`"
+    $SCRIPT/menu -t "$title" -h "$header" -f "Restoring image...\nRestore started `date +%H:%M:%S`"
 
     footer=`$SCRIPT/restore_backup`
     # Force an exit/reboot after successful restore

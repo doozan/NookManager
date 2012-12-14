@@ -32,7 +32,7 @@ until [ "$key" -eq "3" ]; do
     button4="Create backup ->"
 
   elif [[ "$key" -eq "4" ]]; then
-    $SCRIPT/menu -t "$title" -h "$header" -f "Creating backup image...\nBackup started `date +%H:%m:%S`"
+    $SCRIPT/menu -t "$title" -h "$header" -f "Creating backup image...\nBackup started `date +%H:%M:%S`"
     footer=`$SCRIPT/create_backup`
     # If the backup succeeded, hide the create backup button
     if [ "$?" -eq "0" ]; then 
