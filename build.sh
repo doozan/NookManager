@@ -65,6 +65,7 @@ mkdir -p $BDIR
 
 download_and_extract "http://images.barnesandnoble.com/PResources/download/Nook/source-code/nook2_1-2.tgz" "$DLDIR/" "$BDIR/nook_src"
 download_and_extract "http://su.barnesandnoble.com/nook/nook2/1.2/aoW5Thnhd71GzQ7C3q6JFI2hXkaOufNIHjBYHo6i/nook_1_2_update.zip" "$DLDIR/" "$BDIR/nook_firmware"
+download_and_extract "http://su.barnesandnoble.com/nook/nook2/1.1.2/byoyFa4tPqT3du0nSXTLrBeYy5CHbHS264o9Ujsh/nook_1_1_2_update.zip" "$DLDIR/" "$BDIR/nook_old_firmware"
 download_and_extract "https://dl.dropbox.com/u/6408470/su-releases/su-2.3.6.1-ef-signed.zip" "$DLDIR/" "$BDIR/superuser"
 download_and_extract "http://buildroot.uclibc.org/downloads/buildroot-2012.08.tar.bz2" "$DLDIR/" "$BDIR/buildroot"
 download "https://github.com/CyanogenMod/android_frameworks_base/blob/jellybean/data/fonts/DroidSansFallback.ttf?raw=true" "$DLDIR/DroidSansFallback.ttf"
@@ -149,6 +150,7 @@ cd "$SWD"
 
 rm -rf "$OUTDIR"
 mkdir -p "$OUTDIR/files/data/app"
+mkdir -p "$OUTDIR/files/system/app"
 mkdir -p "$OUTDIR/files/system/bin"
 mkdir -p "$OUTDIR/files/system/fonts"
 mkdir -p "$OUTDIR/files/system/framework"
@@ -164,6 +166,9 @@ cp "$BDIR/nook_firmware/cfg.bin" "$OUTDIR"
 cp "$BDIR/nook_firmware/flash_spl.bin" "$OUTDIR"
 cp "$SWD/misc/booting.pgm" "$OUTDIR"
 cp -r "$SWD/NookManager/"* "$OUTDIR/"
+
+# Copy PackageInstaller from the old firmware (Needed for 1.2.0)
+cp "$BDIR/nook_old_firmware/system/app/PackageInstaller.apk" "$OUTDIR/files/system/app"
 
 cp "$BDIR/superuser/system/app/Superuser.apk" "$OUTDIR/files/data/app/com.noshufou.android.su.apk"
 cp "$BDIR/superuser/system/bin/su" "$OUTDIR/files/system/bin/"

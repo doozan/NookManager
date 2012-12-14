@@ -1,0 +1,16 @@
+# Check system version
+
+SYSTEM=`grep ro.build.version.incremental /nook/system/build.prop | cut -d "=" -f 2`
+
+if [ "$SYSTEM" != "1.2.0" ]; then
+  exit 1
+fi
+
+[ -f /nook/system/app/PackageInstaller.apk.orig ] || mv /nook/system/app/PackageInstaller.apk /nook/system/app/PackageInstaller.apk.orig
+
+cp /sdcard/files/system/app/PackageInstaller.apk /nook/system/app
+
+chown root.root /nook/system/app/PackageInstaller.apk
+chmod 644 /nook/system/app/PackageInstaller.apk
+
+echo "Replaced PackageInstaller.apk"
