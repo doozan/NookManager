@@ -70,7 +70,7 @@ download_and_extract "https://dl.dropbox.com/u/6408470/su-releases/su-2.3.6.1-ef
 download_and_extract "http://buildroot.uclibc.org/downloads/buildroot-2012.08.tar.bz2" "$DLDIR/" "$BDIR/buildroot"
 download "https://github.com/CyanogenMod/android_frameworks_base/blob/jellybean/data/fonts/DroidSansFallback.ttf?raw=true" "$DLDIR/DroidSansFallback.ttf"
 download "https://s3.amazonaws.com/github/downloads/yiselieren/ReLaunch/ReLaunch-1.3.8.apk" "$DLDIR/"
-download "https://s3.amazonaws.com/github/downloads/doozan/NookTouchModManager/NookTouchModManager-0.3.0.apk" "$DLDIR/"
+download "http://download.doozan.com/nook/NookTouchModManager-0.4.0.apk" "$DLDIR/"
 download "http://pool.apk.bazaarandroid.com/moonglo/com-amazon-venezia-201000-634745-98e61fd37521387e2e0b61be64a518b0.apk" "$DLDIR/"
 download "https://smali.googlecode.com/files/baksmali-1.4.0.jar" "$DLDIR/"
 download "https://smali.googlecode.com/files/smali-1.4.0.jar" "$DLDIR/"
@@ -174,7 +174,7 @@ cp "$BDIR/superuser/system/app/Superuser.apk" "$OUTDIR/files/data/app/com.noshuf
 cp "$BDIR/superuser/system/bin/su" "$OUTDIR/files/system/bin/"
 cp "$DLDIR/DroidSansFallback.ttf" "$OUTDIR/files/system/fonts/"
 cp "$DLDIR/ReLaunch-1.3.8.apk" "$OUTDIR/files/data/app/com.harasoft.relaunch.apk"
-cp "$DLDIR/NookTouchModManager-0.3.0.apk" "$OUTDIR/files/data/app/org.nookmods.ntmm.apk"
+cp "$DLDIR/NookTouchModManager-0.4.0.apk" "$OUTDIR/files/data/app/org.nookmods.ntmm.apk"
 cp "$DLDIR/com-amazon-venezia-201000-634745-98e61fd37521387e2e0b61be64a518b0.apk" "$OUTDIR/files/data/app/com.android.venezia.apk"
 
 cp "$BDIR/patched-jars/android.policy.jar" "$OUTDIR/files/system/framework/"

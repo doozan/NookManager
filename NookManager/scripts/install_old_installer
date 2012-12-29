@@ -2,7 +2,8 @@
 
 SYSTEM=`grep ro.build.version.incremental /nook/system/build.prop | cut -d "=" -f 2`
 
-if [ "$SYSTEM" != "1.2.0" ]; then
+if [ "$SYSTEM" != "1.2.0" -a "$SYSTEM" != "1.2.1" ]; then
+  echo "PackageInstaller not modified"
   exit 1
 fi
 
