@@ -66,7 +66,7 @@ mkdir -p $BDIR
 download_and_extract "http://images.barnesandnoble.com/PResources/download/Nook/source-code/nook2_1-2.tgz" "$DLDIR/" "$BDIR/nook_src"
 download_and_extract "http://su.barnesandnoble.com/nook/nook2/1.2/aoW5Thnhd71GzQ7C3q6JFI2hXkaOufNIHjBYHo6i/nook_1_2_update.zip" "$DLDIR/" "$BDIR/nook_firmware"
 download_and_extract "http://su.barnesandnoble.com/nook/nook2/1.1.2/byoyFa4tPqT3du0nSXTLrBeYy5CHbHS264o9Ujsh/nook_1_1_2_update.zip" "$DLDIR/" "$BDIR/nook_old_firmware"
-download_and_extract "https://dl.dropbox.com/u/6408470/su-releases/su-2.3.6.1-ef-signed.zip" "$DLDIR/" "$BDIR/superuser"
+download_and_extract "http://www.adbtoolkit.com/rooting/su/zip/su-2.3.6.1-ef-signed.zip" "$DLDIR/" "$BDIR/superuser"
 download_and_extract "http://buildroot.uclibc.org/downloads/buildroot-2012.08.tar.bz2" "$DLDIR/" "$BDIR/buildroot"
 download "https://github.com/CyanogenMod/android_frameworks_base/blob/jellybean/data/fonts/DroidSansFallback.ttf?raw=true" "$DLDIR/DroidSansFallback.ttf"
 download "https://s3.amazonaws.com/github/downloads/yiselieren/ReLaunch/ReLaunch-1.3.8.apk" "$DLDIR/"
