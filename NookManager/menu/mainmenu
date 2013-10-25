@@ -13,11 +13,11 @@ while [ "$key" -ne "3" ]; do
   POWER=`cat  /sys/class/power_supply/bq27510-0/capacity`
 
   if [ "$POWER" -lt "40" ]; then
-    header="System: $SYSTEM\nBattery Level: $POWER\nPlease charge your battery above 40\nand then restart Snoogie."
+    header="System: $SYSTEM\nBattery Level: $POWER\nPlease charge your battery above 40\nand then restart NookManager."
     button1=
-    button2=
     button3="<- Exit"
-    button2="About ->"
+    button2=
+    button4=
   else
     header="System: $SYSTEM\nBattery Level: $POWER"
     button1="<- Rescue"
