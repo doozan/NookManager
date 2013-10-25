@@ -27,7 +27,7 @@ until [ "$key" -eq "3" ]; do
   if [[ "$key" -eq "2" ]]; then
     $SCRIPT/menu -t "$title" -h "$header" -f "Formatting free space on SD card..."
     footer=`$SCRIPT/format_unused_sdcard`
-    header=""
+    header="It will take 15-45 minutes to create a backup."
     button2=""
     button4="Create backup ->"
 
