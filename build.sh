@@ -182,24 +182,24 @@ cp "$BDIR/patched-jars/services.jar" "$OUTDIR/files/system/framework/"
 
 # Create image
 dd if=/dev/zero of=NookManager.img bs=1MiB count=64
-losetup /dev/loop0 NookManager.img
-parted /dev/loop0 mklabel msdos
-parted /dev/loop0 --align=cyl mkpart primary fat32 0 100%
-parted /dev/loop0 set 1 boot on
-losetup -o 16384 /dev/loop1 /dev/loop0
-mkdosfs -F 32 -n "NookManager" /dev/loop1
+sudo losetup /dev/loop0 NookManager.img
+sudo parted /dev/loop0 mklabel msdos
+sudo parted /dev/loop0 --align=cyl mkpart primary fat32 0 100%
+sudo parted /dev/loop0 set 1 boot on
+sudo losetup -o 16384 /dev/loop1 /dev/loop0
+sudo mkdosfs -F 32 -n "NookManager" /dev/loop1
 
 if [ ! -d "$BDIR/tmpmount" ]; then
   mkdir "$BDIR/tmpmount"
 fi
-mount -t vfat /dev/loop1 "$BDIR/tmpmount"
+sudo mount -t vfat -o uid=$(id -ur) -o gid=$(id -gr) /dev/loop1 "$BDIR/tmpmount"
 
 rsync -a "$OUTDIR/" "$BDIR/tmpmount/"
 sync
-umount "$BDIR/tmpmount"
+sudo umount "$BDIR/tmpmount"
 
-losetup -d /dev/loop1
+sudo losetup -d /dev/loop1
 sync
-losetup -d /dev/loop0
+sudo losetup -d /dev/loop0
 
 echo "Build Complete.  You can now flash NookManager.img to a SD card."
