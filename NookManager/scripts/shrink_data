@@ -1,0 +1,28 @@
+SCRIPT=/tmp/sdcache/scripts
+
+$SCRIPT/mount_nook
+
+echo Backup started `date +%H:%M:%S`
+
+# Zero the free space on each of the Nook's partitions 
+# (described as "Erasing empty storage areas" on-screen)
+
+dd if=/dev/zero of=/nook/factory/DELETEME bs=512k
+rm /nook/factory/DELETEME
+
+dd if=/dev/zero of=/nook/system/DELETEME bs=512k
+rm /nook/system/DELETEME
+
+dd if=/dev/zero of=/nook/userdata/DELETEME bs=512k
+rm /nook/userdata/DELETEME
+
+dd if=/dev/zero of=/nook/cache/DELETEME bs=512k
+rm /nook/cache/DELETEME
+
+dd if=/dev/zero of=/nook/data/DELETEME bs=512k
+rm /nook/data/DELETEME
+
+sync
+$SCRIPT/umount_nook
+
+exit 0
