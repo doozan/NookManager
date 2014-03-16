@@ -1,3 +1,4 @@
 staging/
 sdcard/
-NookManager.img
+NookManager.img*
+build.sh?*
