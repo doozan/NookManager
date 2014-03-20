@@ -181,25 +181,28 @@ cp "$BDIR/patched-jars/android.policy.jar" "$OUTDIR/files/system/framework/"
 cp "$BDIR/patched-jars/services.jar" "$OUTDIR/files/system/framework/"
 
 # Create image
-dd if=/dev/zero of=NookManager.img bs=1MiB count=64
-losetup /dev/loop0 NookManager.img
-parted /dev/loop0 mklabel msdos
-parted /dev/loop0 --align=cyl mkpart primary fat32 0 100%
-parted /dev/loop0 set 1 boot on
-losetup -o 16384 /dev/loop1 /dev/loop0
-mkdosfs -F 32 -n "NookManager" /dev/loop1
+IMAGE_FILE=NookManager.img
+dd if=/dev/zero of=$IMAGE_FILE bs=1MiB count=64
+WHOLE_CARD=$(sudo losetup -f)
+sudo losetup $WHOLE_CARD $IMAGE_FILE
+BOOTFS_DEV=$(sudo losetup -f)
+sudo parted $WHOLE_CARD mklabel msdos
+sudo parted $WHOLE_CARD --align=minimal mkpart primary fat32 16384B 100%
+sudo parted $WHOLE_CARD set 1 boot on
+sudo losetup -o 16384 $BOOTFS_DEV $WHOLE_CARD
+sudo mkdosfs -F 32 -n "NookManager" $BOOTFS_DEV
 
 if [ ! -d "$BDIR/tmpmount" ]; then
   mkdir "$BDIR/tmpmount"
 fi
-mount -t vfat /dev/loop1 "$BDIR/tmpmount"
+sudo mount -t vfat -o uid=$(id -ur) -o gid=$(id -gr) $BOOTFS_DEV "$BDIR/tmpmount"
 
 rsync -a "$OUTDIR/" "$BDIR/tmpmount/"
 sync
-umount "$BDIR/tmpmount"
+sudo umount "$BDIR/tmpmount"
 
-losetup -d /dev/loop1
+sudo losetup -d $BOOTFS_DEV
 sync
-losetup -d /dev/loop0
+sudo losetup -d $WHOLE_CARD
 
-echo "Build Complete.  You can now flash NookManager.img to a SD card."
+echo "Build Complete.  You can now flash $IMAGE_FILE to an SD card."

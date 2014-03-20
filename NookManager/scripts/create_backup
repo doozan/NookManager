@@ -7,25 +7,7 @@ umount /tmp/backups
 mkdir -p /tmp/backups
 mount -t vfat /dev/block/mmcblk1p2 /tmp/backups
 
-$SCRIPT/mount_nook
-
 echo Backup started `date +%H:%M:%S`
-
-# Zero the free space on each of the Nook's partitions 
-dd if=/dev/zero of=/nook/factory/DELETEME bs=512k
-rm /nook/factory/DELETEME
-
-dd if=/dev/zero of=/nook/system/DELETEME bs=512k
-rm /nook/system/DELETEME
-
-dd if=/dev/zero of=/nook/userdata/DELETEME bs=512k
-rm /nook/userdata/DELETEME
-
-dd if=/dev/zero of=/nook/cache/DELETEME bs=512k
-rm /nook/cache/DELETEME
-
-dd if=/dev/zero of=/nook/data/DELETEME bs=512k
-rm /nook/data/DELETEME
 
 sync
 
@@ -46,7 +28,6 @@ fi
 
 sync
 umount /tmp/backups
-$SCRIPT/umount_nook
 
 echo "/dev/block/mmcblk1p2" >  /sys/devices/platform/usb_mass_storage/lun1/file
 

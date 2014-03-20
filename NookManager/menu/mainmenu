@@ -11,15 +11,19 @@ key=0
 while [ "$key" -ne "3" ]; do
 
   POWER=`cat  /sys/class/power_supply/bq27510-0/capacity`
+  CHARGING=`cat /sys/class/power_supply/bq27510-0/status`
 
-  if [ "$POWER" -lt "40" ]; then
-    header="System: $SYSTEM\nBattery Level: $POWER\nPlease charge your battery above 40\nand then restart NookManager."
+  POWERMSG="$POWER%%"
+  [ "" != "$CHARGING" ] && POWERMSG="$POWER%% ($CHARGING)"
+  header="System: $SYSTEM\nBattery Level: $POWERMSG"
+
+  if [ "$POWER" -lt "40" -a \( "$POWER" -lt 20 -o "$CHARGING" != "Charging" \) ]; then
+    header="$header\nPlease charge your battery above 40%%\n(or 20%% when plugged in to power)\nand then restart NookManager."
     button1=
     button3="<- Exit"
     button2=
     button4=
   else
-    header="System: $SYSTEM\nBattery Level: $POWER"
     button1="<- Rescue"
     button3="<- Exit"
     button2="Root ->"

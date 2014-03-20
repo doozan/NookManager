@@ -39,10 +39,10 @@ done
 -pointsize 45 \
 -draw "gravity North text 0,0 '$title'" \
 -pointsize 26 \
--draw "gravity West text 0,-100 '$button1' " \
--draw "gravity East text 0,-100 '$button2' " \
--draw "gravity West text 0,120  '$button3' " \
--draw "gravity East text 0,120  '$button4' " \
+-draw "gravity West text 0,-115 '$button1' " \
+-draw "gravity East text 0,-85  '$button2' " \
+-draw "gravity West text 0,105  '$button3' " \
+-draw "gravity East text 0,135  '$button4' " \
 -gravity north \
 -annotate +0+80 "$header" \
 -gravity south \
