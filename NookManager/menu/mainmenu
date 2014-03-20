@@ -13,7 +13,7 @@ while [ "$key" -ne "3" ]; do
   POWER=`cat  /sys/class/power_supply/bq27510-0/capacity`
   CHARGING=`cat /sys/class/power_supply/bq27510-0/status`
 
-  POWERMSG="$POWER%"
+  POWERMSG="$POWER%%"
   [ "" != "$CHARGING" ] && POWERMSG="$POWER%% ($CHARGING)"
   header="System: $SYSTEM\nBattery Level: $POWERMSG"
 
